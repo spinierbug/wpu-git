@@ -1,0 +1,133 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    background-color: #fff;
+    display: grid;
+    place-items: center;
+    height: 100vh;
+}
+
+.body_login{
+    width: 600px;
+}
+.instruction{
+    background-color: black;
+    color: white;
+    margin-top: 120px;
+    border-radius: 5px;
+    width: 300px;
+    float: right;
+    padding: 7px;
+    height: 180px;
+    display: none;
+}
+
+.main-instruction {
+    padding: 30px;
+    margin-left: auto;
+    margin-top: 15px;
+}
+
+.container{
+    position: relative;
+    margin-left: auto;
+    width: 300px;
+    left: 140px;
+    float: left;
+}
+.close-btn {
+    border: none;
+    background-color: #000000;
+    padding: 2px;
+    float: right;
+   
+    border-radius: 5px;
+    
+
+}
+
+#pic {
+    float: right;
+    
+}
+
+.pic1 {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 160px;
+}
+
+h2{
+    position: absolute;
+    
+}
+form {
+    display: block;
+    flex-direction: column;
+    
+}
+
+.login{
+    position: relative;
+
+}
+
+.h1{
+    display: flex;
+    flex-direction: column;
+}
+
+input[type = text]{
+    padding: 5px;
+    border-bottom: 1px solid #5e5d5d;
+    border-radius: 5px;
+    margin-top: 10px;
+    width: 290px;
+}
+
+label[type = hand1]{
+    padding: 10px;
+    display: contents;
+    flex-direction: column;
+}
+
+select{
+    padding: 5px;
+    border-bottom: 1px solid #5e5d5d;
+    border-radius: 5px;
+     
+    margin-top: 10px;
+    width: 290px;
+}
+
+.login-btn{
+    border: none;
+    background-color: green;
+    color: #ffffff;
+    font-size: 15px;
+    padding: 10px;
+    float: left;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 25px;
+    width: 140px;
+}
+
+.info-btn{
+    border: none;
+    background-color: #c57600;
+    color: #fff;
+    font-size: 15px;
+    padding: 10px;
+    float: right;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 25px;
+    width: 140px;
+}
+

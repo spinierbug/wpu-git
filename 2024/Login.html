@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE-edge"/>
+        <meta name="viewport" content="width=device-width, initial-scale"/>
+        <link rel="stylesheet" href="Style.css"/>
+        <title>Shooting Practice</title>
+    </head>
+    <body>
+    <div class="body_login">
+        <div class="instruction" id ="instruction">
+            <span ><h2 id="title"><strong>How To Play Game</strong></h2>
+            <button class="close-btn" onclick="myFunction()"><img src="exit cross.png" alt="exit" id="pic" width="60px"></button>
+            
+                <ol class="main-instruction">
+                    <p> </p>
+
+                <li>Input username</li>
+                <li>Point the Pointer at the Target</li>
+                <li>Click to Shoot</li> 
+                <li>Get as many point as possible</li>
+                <li>Enjoy!</li>
+            </ol></span>
+        </div>
+        <div class="container" id="container">
+        <picture>
+            <img src="shooter.png" alt="logo" width="130px" class="pic1">
+        </picture>
+        
+        <form>
+            <div class="login">
+            <input type="text" name="username" placeholder="input username"> <br>
+            <select name="level" id="level"> 
+                <option value="">Select Level</option>
+                <option value="easy">Easy</option>
+                <option value="medium">Medium</option>
+                <option value="hard">Hard</option>
+            </select>
+            </div>
+            <div > 
+                <center>
+                <label for="hand1"><img src="gun1.png" alt="hand" width="80px"> </label>
+                <input type="radio" id="hand1" name="hand">
+                <label for="hand2"><img src="gun2.png" alt="hand" width="80px"> </label>
+                <input type="radio" id="hand2" name="hand">
+                </center>
+            </div>
+            <div>
+                <label for="target1"><img src="target1.png" alt="target" width="80px"> </label>
+                <input type="radio" id="target1" name="target">
+                <label for="target2"><img src="target2.png" alt="target" width="80px"> </label>
+                <input type="radio" id="target2" name="target">
+                <label for="target3"><img src="target3.png" alt="target" width="80px"> </label>
+                <input type="radio" id="target3" name="target">
+
+            </div>
+        <input type="submit" class="login-btn" value="Play Games">
+        
+        </form>
+        
+        <button onclick="myFunction()" class="info-btn">Intruction</button>
+        </div>
+        <script src="Login.js"></script>
+    </div>
+    </body>
+</html>
