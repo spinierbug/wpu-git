@@ -4,24 +4,20 @@ body, html {
 }
 
 .bg {
-    height: 600px;
+    height: 680px;
     width: 80%;
     background-image: url("background.jpg");
     float: left;
     background-repeat: no-repeat;
+    background-size: 100% 100%;
     z-index: 2;
-    /* background-image: url("background.jpg");
-    height: 100%;
-    width: 70%;
-    background-size: 80% 100%;
-    float: left;
-    background-repeat: no-repeat;
-    z-index: 1; */
+    
 }
 .square {
-    height: 600px;
-    width: 240px;
+    height: 680px;
+    width: 20%;
     background-color: #000000;
+
     float: right;
     z-index: 2;
 }
