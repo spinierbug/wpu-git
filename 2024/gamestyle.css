@@ -21,3 +21,6 @@ body, html {
     float: right;
     z-index: 2;
 }
+.score {
+    background-color: #000000;
+}
