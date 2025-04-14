@@ -3,23 +3,29 @@
     <head>
         <meta charset="UTF-8"/>
         <meta http-equiv="X-UA-Compatible" content="IE-edge"/>
-        <meta name="viewport" content="width=device-width, initial-scale"/>
+        <meta name="viewport" content="width=device-width"/>
         <link rel="stylesheet" href="gamestyle.css"/>
         <title>Shooting Practice</title>
     </head>
     <body>
         <div>
-        <div class="bg">
-            <div class="board">
-            </div>
-            <div class="custom-cursor">
-                <img src="gun2.png" alt="hand 2" class="hand2">
-            </div>
+            <div class="bg">
+                <div class="board">
+                </div>
+                <div class="custom-cursor"></div>
+                <div class="target">
+                    <img src="target1.png" alt="target1" class="target1" id ="randomImage">
+                    <button id ="showImage">
+                        
+                    </button>
+                </div>
+                
+            <img src="gun2.png" alt="hand 2" class="hand2">
         </div>
         <div class="skor">
             <p1>Player Name</p1>
-            <p2>Score:</p2>
-            <p3>Time:</p3>
+            <p2>Score: <span id="score" >0</span></p2>
+            <p3>Time: <span id="timer">00:00</span></p3>
         </div>
         <div class="hand">
         </div>
@@ -57,6 +63,7 @@
                 <span class="score">Score: 70</span>
                 <button>Detail</button>
             </div>
+            <script src ="Game.js"></script>
             </center>
         </div>
         </div>

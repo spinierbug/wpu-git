@@ -1,10 +1,15 @@
 body, html {
     height: 100%;
     margin: 0;
+    overflow: hidden;
+}
+
+body {
+    cursor: none; /* Sembunyikan kursor default */
 }
 
 .bg {
-    height: 680px;
+    height: 947px;
     width: 80%;
     background-image: url("background.jpg");
     float: left;
@@ -14,7 +19,7 @@ body, html {
     
 }
 .square {
-    height: 680px;
+    height: 946px;
     width: 20%;
     background-color: #000000;
     float: right;
@@ -96,24 +101,29 @@ p3 {
     height: 40%;
     position: absolute;
     width: 35%;
-    top: 60%;
+    top: 571px;
     left: 30%;
     opacity: 1.0;
 }
 
 .custom-cursor {
-    cursor: url('pointer.png'), auto; 
-    width: 100%;
-    height: 92%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    cursor: none; /* Sembunyikan kursor default */
+    position: fixed;
+    width: 50px; /* Sesuaikan ukuran kursor */
+    height: 50px;
+    background: url('pointer.png') no-repeat center center; /* Gambar kursor */
+    background-size: contain;
+    z-index: 9999; /* Pastikan elemen ini berada di atas */
+    pointer-events: none; /* Jangan menghalangi klik */
+    display: none; /* Sembunyikan kursor kustom secara default */
 }
-
-.target {
-    position: relative;
-    height: 100vh; /* Mengatur tinggi body */
+.target1 {
+    position: fixed;
+    height: 20vh; /* Mengatur tinggi body */
     overflow: hidden; /* Menghindari scrollbar */
+    left: 45%;
+    top: 30%;
+    z-index: 1; /* Pastikan z-index lebih rendah dari .custom-cursor jika ingin di bawah */
 }
 
 .randomtarget {
@@ -122,4 +132,39 @@ p3 {
     max-width: 100px; /* Sesuaikan ukuran gambar */
     height: auto; /* Pertahankan rasio aspek */
     cursor: pointer; /* Menunjukkan bahwa gambar dapat diklik */
+}
+
+.target {
+    height: 90%;
+    width: 100%;
+    position: fixed;
+    z-index: 0;
+}
+
+#showImage {
+    position: fixed;
+    z-index: 0;
+    display: none; /* Sembunyikan gambar secara default */
+}
+
+@media (max-width: 768px) {
+    .bg {
+        height: 100%;
+        width: 100%;
+    }
+    .square {
+        height: 100%;
+        width: 100%;
+        background-color: #000000;
+        float: none;
+        z-index: 2;
+    }
+    .board {
+        background-color: #000000;
+        height: 10%;
+        width: 100%;
+        opacity: 0.8;
+    
+    }
+
 }
