@@ -28,10 +28,10 @@
             <img src="shooter.png" alt="logo" width="130px" class="pic1">
         </picture>
         
-        <form>
+        <form action="Game.html" method="get">
             <div class="login">
-            <input type="text" name="username" placeholder="input username"> <br>
-            <select name="level" id="level"> 
+            <input type="text" name="username" placeholder="input username" required> <br>
+            <select name="level" id="level" required> 
                 <option value="">Select Level</option>
                 <option value="easy">Easy</option>
                 <option value="medium">Medium</option>
@@ -41,18 +41,18 @@
             <div > 
                 <center>
                 <label for="hand1"><img src="gun1.png" alt="hand" width="80px"> </label>
-                <input type="radio" id="hand1" name="hand">
+                <input type="radio" id="hand1" name="hand" value="gun1.png" required>
                 <label for="hand2"><img src="gun2.png" alt="hand" width="80px"> </label>
-                <input type="radio" id="hand2" name="hand">
+                <input type="radio" id="hand2" name="hand" value="gun2.png" required>
                 </center>
             </div>
             <div>
                 <label for="target1"><img src="target1.png" alt="target" width="80px"> </label>
-                <input type="radio" id="target1" name="target">
+                <input type="radio" id="target1" name="target" value="target1.png" required>
                 <label for="target2"><img src="target2.png" alt="target" width="80px"> </label>
-                <input type="radio" id="target2" name="target">
+                <input type="radio" id="target2" name="target" value="target2.png" required>
                 <label for="target3"><img src="target3.png" alt="target" width="80px"> </label>
-                <input type="radio" id="target3" name="target">
+                <input type="radio" id="target3" name="target" value="target3.png" required>
 
             </div>
         <input type="submit" class="login-btn" value="Play Games">

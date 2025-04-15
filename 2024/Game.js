@@ -1,41 +1,84 @@
 document.addEventListener('DOMContentLoaded', () => {
     let score = 0;
-    let timer; // Variabel untuk menyimpan interval timer
-    let waktu = 0; // Waktu dalam detik
-    const batasWaktu = 300; // Batas waktu dalam detik (misalnya 5 menit)
+    let timer;
+    let seconds = 0;
+    let maxTime = 60; // Batas waktu dalam detik (default)
 
-        // Ambil elemen untuk menampilkan skor
+    let gameActive = true; // Tambahkan deklarasi gameActive
+
+    // Ambil elemen untuk menampilkan skor
     const skorElement = document.getElementById('score');
     const customCursor = document.querySelector('.custom-cursor');
     const bg = document.querySelector('.bg');
     const skor = document.querySelector('.skor');
     const hand = document.querySelector('.hand');
     const square = document.querySelector('.square');
+    const image = document.getElementById('randomImage');
 
-    function formatWaktu(detik) {
-        const menit = Math.floor(detik / 60);
-        const detikSisa = detik % 60;
-        return `${String(menit).padStart(2, '0')}:${String(detikSisa).padStart(2, '0')}`;
-    }
+    // Array lokasi acak
+    const positions = [
+        { top: '250px', left: '500px' },
+        { top: '30%', left: '50%' },
+        { top: '50%', left: '62%' },
+        { top: '70%', left: '10%' },
+        { top: '20%', left: '60%' },
+        { top: '60%', left: '10%' }
+    ];
 
-    function mulaiTimer() {
-        clearInterval(timer); // Hentikan timer sebelumnya jika ada
+    function startTimer() {
         timer = setInterval(() => {
-            if (waktu >= batasWaktu) {
+            seconds++;
+            document.getElementById('timer').innerText = `${seconds} detik`;
+
+            if (seconds >= maxTime) {
                 clearInterval(timer);
-                alert("Waktu habis! Skor akhir: " + score);
-            } else {
-                waktu++;
-                document.getElementById('timer').textContent = formatWaktu(waktu);
+                document.getElementById('timer').innerText = `Waktu Habis!`;
+                gameActive = false; // Nonaktifkan permainan
+                image.removeEventListener('click', handleImageClick); // Nonaktifkan klik pada gambar
             }
-        }, 1000); // Update setiap detik
+        }, 1000);
     }
 
-    function hentikanTimer() {
-        clearInterval(timer); // Hentikan timer
+    window.onload = function () {
+        const urlParams = new URLSearchParams(window.location.search);
+        const level = urlParams.get('level');
+        const username = urlParams.get('username');
+        const handImage = urlParams.get('hand');
+        const randomImage = urlParams.get('target');
+
+        // Atur waktu berdasarkan level
+        if (level === 'easy') {
+            maxTime = 60; // 60 detik untuk level easy
+        } else if (level === 'medium') {
+            maxTime = 45; // 45 detik untuk level medium
+        } else if (level === 'hard') {
+            maxTime = 30; // 30 detik untuk level hard
+        }
+
+        // Menampilkan informasi pengguna
+        document.getElementById('userInfo').innerText = `${username}, Level: ${level}`;
+        document.getElementById('playerName').innerText = username;
+        document.getElementById('handImage').src = handImage;
+        document.getElementById('randomImage').src = randomImage;
+        startTimer(); // Memulai timer setelah level diatur
+    };
+
+    // Tambahkan event listener untuk klik pada gambar
+    if (image) {
+        image.addEventListener('click', handleImageClick);
     }
 
+    function handleImageClick() {
+        if (!gameActive) return;
 
+        // Pilih posisi acak dari array
+        const randomPosition = positions[Math.floor(Math.random() * positions.length)];
+        image.style.top = randomPosition.top;
+        image.style.left = randomPosition.left;
+        console.log('posisi:', randomPosition);
+        score += 1; // Tambahkan skor
+        skorElement.textContent = score; // Update tampilan skor
+    }
 
     // Pastikan elemen custom-cursor mengikuti posisi kursor
     document.addEventListener('mousemove', (e) => {
@@ -76,29 +119,4 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
-
-    const image = document.getElementById('randomImage');
-
-    // Array lokasi acak
-    const positions = [
-        { top: '250px', left: '500px' },
-        { top: '30%', left: '50%' },
-        { top: '50%', left: '62%' },
-        { top: '70%', left: '10%' },
-        { top: '20%', left: '60%' },
-        { top: '60%', left: '10%' }
-    ];
-
-    if (image) {
-        image.addEventListener('click', () => {
-            // Pilih posisi acak dari array
-            const randomPosition = positions[Math.floor(Math.random() * positions.length)];
-            image.style.top = randomPosition.top;
-            image.style.left = randomPosition.left;
-            console.log('posisi:', randomPosition);
-            image.style.display = 'block'; // Tampilkan gambar
-            score += 1;
-            skorElement.textContent = score;// Update tampilan skor
-        });
-    }
 });

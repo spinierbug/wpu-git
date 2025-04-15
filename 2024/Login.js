@@ -4,7 +4,7 @@ form.addEventListener("submit", (e)=>{
     const username = form.username.value
 
     const authenticated = authentication(username)
-        window.location.href = "Logout.html"
+        window.location.href = "Game.html"
 })
 
 function authentication(username){
