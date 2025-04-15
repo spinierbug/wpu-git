@@ -12,6 +12,12 @@
             <div class="bg">
                 <div class="board">
                 </div>
+                <div id="gameOverMenu" style="display: none;">
+                    <h1>Game Over</h1>
+                    <p>Skor Akhir: <span id="finalScore"></span></p>
+                    <button id="retryButton">Coba Lagi</button>
+                    <button id="backToMenuButton">Kembali ke Menu</button>
+                </div>
                 <div id="userInfo" style="display: none;"></div>
                 <div class="custom-cursor"></div>
                 <div class="target">
@@ -34,10 +40,9 @@
             <center>
             <br>
             <h><b>LEADERBOARD</b></h>
-            <select >
-                <option>Sort By Scores</option>
-                <option value="lowest">Lowest</option>
-                <option value="medium">Higher</option>
+            <select>
+                <option value="highest">Sort By Highest Scores</option>
+                <option value="lowest">Sort By Lowest Scores</option>
             </select>
             <br>
             <div class="player">
