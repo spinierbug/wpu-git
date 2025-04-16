@@ -84,9 +84,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Pastikan elemen custom-cursor mengikuti posisi kursor
     document.addEventListener('mousemove', (e) => {
+        const customCursor = document.querySelector('.custom-cursor');
         if (customCursor) {
-            customCursor.style.top = `${e.clientY}px`;
-            customCursor.style.left = `${e.clientX}px`;
+            customCursor.style.position = 'absolute'; // Pastikan elemen dapat diposisikan
+            customCursor.style.top = `${e.clientY}px`; // Atur posisi vertikal
+            customCursor.style.left = `${e.clientX}px`; // Atur posisi horizontal
         }
     });
 

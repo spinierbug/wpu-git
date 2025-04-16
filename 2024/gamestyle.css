@@ -9,6 +9,7 @@ body {
 }
 
 .bg {
+    position: relative; /* Tambahkan ini */
     height: 947px;
     width: 80%;
     background-image: url("background.jpg");
@@ -18,7 +19,15 @@ body {
     z-index: 2;
     
 }
+.bg::after {
+    content: "";
+    display: table;
+    clear: both;
+}
 .square {
+    box-sizing: border-box; /* Tambahkan ini */
+    margin: 0; /* Pastikan margin diatur ke 0 */
+    padding: 0; /* Pastikan padding diatur ke 0 */
     height: 946px;
     width: 20%;
     background-color: #000000;
@@ -45,6 +54,8 @@ select {
 }
 
 .player {
+    display: block; /* Pastikan elemen ditampilkan sebagai blok */
+    margin: 0 auto; /* Pusatkan elemen di dalam .square */
     padding: 15px 0;
     border-bottom: 1px solid white;
     width: 80%;
@@ -67,42 +78,35 @@ select {
     height: 30%;
 }
 
-p1 {
+p1, p2, p3 {
     position: absolute;
-    left: 4%;
-    top: 2%;
-    font-weight: 200;
+    font-weight: bold;
     font-size: large;
     color: white;
-    font-weight: bold;
+    z-index: 5; /* Pastikan lebih rendah dari #gameOverMenu */
+}
+
+p1 {
+    left: 4%;
+    top: 2%;
 }
 
 p2 {
-    position: absolute;
     left: 38%;
     top: 2%;
-    font-weight: 200;
-    font-size: large;
-    color: white;
-    font-weight: bold;
 }
 
 p3 {
-    position: absolute;
     left: 65%;
     top: 2%;
-    font-weight: 200;
-    font-size: large;
-    color: white;
-    font-weight: bold;
 }
 
 .hand2 {
     height: 40%;
     position: absolute;
-    width: 35%;
+    width: 40%;
     top: 571px;
-    left: 30%;
+    left: 40%;
     opacity: 1.0;
 }
 
@@ -115,8 +119,8 @@ p3 {
     background-size: contain;
     z-index: 9999; /* Pastikan elemen ini berada di atas */
     pointer-events: none; /* Jangan menghalangi klik */
-    display: none; /* Sembunyikan kursor kustom secara default */
 }
+
 .target1 {
     position: fixed;
     height: 20vh; /* Mengatur tinggi body */
@@ -141,6 +145,7 @@ p3 {
     z-index: 0;
 }
 
+
 #showImage {
     position: fixed;
     z-index: 0;
@@ -148,15 +153,49 @@ p3 {
 }
 
 #gameOverMenu {
-    display: none; /* Tersembunyi secara default */
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: white;
-    padding: 20px;
-    border: 2px solid black;
-    z-index: 1000;
+    position: absolute; /* Ubah dari fixed ke absolute */
+    top: 40%; /* Pusatkan secara vertikal */
+    left: 50%; /* Pusatkan secara horizontal */
+    transform: translate(-50%, -50%); /* Geser elemen ke tengah */
+    width: 35%; /* Sesuaikan lebar menu */
+    height: auto; /* Biarkan tinggi menyesuaikan konten */
+    background-color: rgba(0, 0, 0, 0.8); /* Warna latar belakang dengan transparansi */
+    color: white; /* Warna teks */
+    text-align: center; /* Pusatkan teks */
+    padding: 20px; /* Tambahkan padding */
+    z-index: 10000; /* Pastikan lebih tinggi dari elemen lainnya */
+    font-family: 'Arial', sans-serif; /* Font yang digunakan */
+    border-radius: 10px; /* Tambahkan sudut melengkung */
+}
+
+#gameOverMenu h1 {
+    font-size: 3em; /* Ukuran font untuk judul */
+    margin-bottom: 20px; /* Jarak bawah */
+}
+
+#gameOverMenu p {
+    font-size: 1.5em; /* Ukuran font untuk teks */
+    margin-bottom: 30px; /* Jarak bawah */
+}
+
+#gameOverMenu button {
+    background-color: #ff4757; /* Warna latar belakang tombol */
+    color: white; /* Warna teks tombol */
+    border: none; /* Hapus border */
+    border-radius: 5px; /* Sudut melengkung */
+    padding: 15px 30px; /* Padding tombol */
+    font-size: 1.2em; /* Ukuran font tombol */
+    cursor: pointer; /* Ubah kursor saat hover */
+    transition: background-color 0.3s; /* Transisi untuk efek hover */
+}
+
+#gameOverMenu button:hover {
+    background-color: #ff6b81; /* Warna latar belakang saat hover */
+}
+
+#gameOverMenu button:focus {
+    outline: none; /* Hapus outline saat tombol difokuskan */
+
 }
 
 @media (max-width: 768px) {
@@ -179,48 +218,5 @@ p3 {
     
     }
 
-    #gameOverMenu {
-        /* display: none; Sembunyikan menu hasil akhir secara default */
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.8); /* Warna latar belakang dengan transparansi */
-        color: white; /* Warna teks */
-        text-align: center; /* Pusatkan teks */
-        padding-top: 20%; /* Jarak dari atas */
-        z-index: 1000; /* Pastikan menu di atas elemen lain */
-        font-family: 'Arial', sans-serif; /* Font yang digunakan */
-    }
-    
-    #gameOverMenu h1 {
-        font-size: 3em; /* Ukuran font untuk judul */
-        margin-bottom: 20px; /* Jarak bawah */
-    }
-    
-    #gameOverMenu p {
-        font-size: 1.5em; /* Ukuran font untuk teks */
-        margin-bottom: 30px; /* Jarak bawah */
-    }
-    
-    #gameOverMenu button {
-        background-color: #ff4757; /* Warna latar belakang tombol */
-        color: white; /* Warna teks tombol */
-        border: none; /* Hapus border */
-        border-radius: 5px; /* Sudut melengkung */
-        padding: 15px 30px; /* Padding tombol */
-        font-size: 1.2em; /* Ukuran font tombol */
-        cursor: pointer; /* Ubah kursor saat hover */
-        transition: background-color 0.3s; /* Transisi untuk efek hover */
-    }
-    
-    #gameOverMenu button:hover {
-        background-color: #ff6b81; /* Warna latar belakang saat hover */
-    }
-    
-    #gameOverMenu button:focus {
-        outline: none; /* Hapus outline saat tombol difokuskan */
 
-}
 }
