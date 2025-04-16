@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
+    loadLeaderboardFromLocalStorage(); // Muat leaderboard dari localStorage
     let score = 0;
     let timer;
     let seconds = 0;
@@ -86,9 +87,18 @@ document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('mousemove', (e) => {
         const customCursor = document.querySelector('.custom-cursor');
         if (customCursor) {
-            customCursor.style.position = 'absolute'; // Pastikan elemen dapat diposisikan
-            customCursor.style.top = `${e.clientY}px`; // Atur posisi vertikal
-            customCursor.style.left = `${e.clientX}px`; // Atur posisi horizontal
+            // Cek apakah mouse berada di dalam elemen .skor, .hand, atau .square
+            const isInsideExcludedElement = [skor, hand, square].some(element => element.contains(e.target));
+            if (isInsideExcludedElement) {
+                customCursor.style.display = 'none'; // Sembunyikan kursor kustom
+                document.body.style.cursor = 'auto'; // Kembalikan kursor default
+            } else {
+                customCursor.style.position = 'absolute'; // Pastikan elemen dapat diposisikan
+                customCursor.style.top = `${e.clientY}px`; // Atur posisi vertikal
+                customCursor.style.left = `${e.clientX}px`; // Atur posisi horizontal
+                customCursor.style.display = 'block'; // Tampilkan kursor kustom
+                document.body.style.cursor = 'none'; // Sembunyikan kursor default
+            }
         }
     });
 
@@ -110,6 +120,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Kembalikan kursor default ketika diarahkan ke .skor, .hand, atau .square
     [skor, hand, square].forEach((element) => {
         element.addEventListener('mouseenter', () => {
+            console.log('Mouse masuk ke elemen:', element); // Debugging
             document.body.style.cursor = 'auto'; // Kembalikan kursor default
             if (customCursor) {
                 customCursor.style.display = 'none'; // Sembunyikan kursor kustom
@@ -117,6 +128,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         element.addEventListener('mouseleave', () => {
+            console.log('Mouse keluar dari elemen:', element); // Debugging
             document.body.style.cursor = 'none'; // Sembunyikan kursor default
             if (customCursor) {
                 customCursor.style.display = 'block'; // Tampilkan kursor kustom
@@ -169,49 +181,89 @@ document.addEventListener('DOMContentLoaded', () => {
         window.location.href = 'Login.html'; // Ganti dengan URL menu utama Anda
     };
 
+    // Fungsi untuk menyimpan leaderboard ke localStorage
+    function saveLeaderboardToLocalStorage() {
+        const leaderboard = [];
+        const players = document.querySelectorAll('.player');
+        players.forEach(player => {
+            const name = player.querySelector('.name').innerText;
+            const score = parseInt(player.querySelector('.score').innerText.split(': ')[1]);
+            leaderboard.push({ name, score });
+        });
+        localStorage.setItem('leaderboard', JSON.stringify(leaderboard));
+    }
+
+    // Fungsi untuk memperbarui leaderboard
     function updateLeaderboard(playerName, score) {
-        const leaderboard = document.querySelector('.square'); // Elemen leaderboard
-        const playerDiv = document.createElement('div'); // Elemen baru untuk pemain
-    
-        playerDiv.classList.add('player'); // Tambahkan kelas CSS
-        playerDiv.innerHTML = `
-            <span class="name">${playerName}</span>
-            <br>
-            <span class="score">Score: ${score}</span>
-            <button>Detail</button>
-        `;
-    
-        leaderboard.appendChild(playerDiv); // Tambahkan elemen pemain ke leaderboard
-        sortLeaderboard(); // Urutkan leaderboard setelah menambahkan pemain baru
+        const leaderboardPlayers = document.getElementById('leaderboardPlayers');
+        const existingPlayer = Array.from(leaderboardPlayers.querySelectorAll('.player')).find(player => {
+            const name = player.querySelector('.name').innerText;
+            return name === playerName;
+        });
+
+        if (existingPlayer) {
+            const currentScore = parseInt(existingPlayer.querySelector('.score').innerText.split(': ')[1]);
+            if (score > currentScore) {
+                existingPlayer.querySelector('.score').innerText = `Score: ${score}`;
+                console.log(`Skor diperbarui untuk ${playerName} dengan skor baru: ${score}`);
+                saveLeaderboardToLocalStorage(); // Simpan ke localStorage
+            } else {
+                console.log(`Skor baru (${score}) lebih rendah atau sama. Tidak diperbarui.`);
+            }
+        } else {
+            const playerDiv = document.createElement('div');
+            playerDiv.classList.add('player');
+            playerDiv.innerHTML = `
+                <span class="name">${playerName}</span>
+                <br>
+                <span class="score">Score: ${score}</span>
+                <button class="detailButton">Detail</button>
+            `;
+            leaderboardPlayers.appendChild(playerDiv);
+            saveLeaderboardToLocalStorage(); // Simpan ke localStorage
+            console.log(`Pemain baru ditambahkan: ${playerName} dengan skor: ${score}`);
+        }
+
+        sortLeaderboard(); // Urutkan leaderboard setelah menambahkan atau memperbarui pemain
     }
 
     function sortLeaderboard(order = 'desc') {
-        const leaderboard = document.querySelector('.square');
-        const players = Array.from(leaderboard.querySelectorAll('.player'));
-    
+        const leaderboardPlayers = document.getElementById('leaderboardPlayers');
+        const players = Array.from(leaderboardPlayers.querySelectorAll('.player'));
+
         players.sort((a, b) => {
             const scoreA = parseInt(a.querySelector('.score').innerText.split(': ')[1]);
             const scoreB = parseInt(b.querySelector('.score').innerText.split(': ')[1]);
-    
+
             if (order === 'asc') {
                 return scoreA - scoreB; // Urutkan dari skor terendah ke tertinggi
             } else {
                 return scoreB - scoreA; // Urutkan dari skor tertinggi ke terendah
             }
         });
-    
+
         // Hapus semua elemen pemain dan tambahkan kembali dalam urutan yang benar
-        players.forEach(player => leaderboard.appendChild(player));
+        players.forEach(player => leaderboardPlayers.appendChild(player));
     }
 
-    document.querySelector('select').addEventListener('change', (event) => {
-        const sortOption = event.target.value;
-    
-        if (sortOption === 'highest') {
-            sortLeaderboard('desc'); // Urutkan dari skor tertinggi ke terendah
-        } else if (sortOption === 'lowest') {
-            sortLeaderboard('asc'); // Urutkan dari skor terendah ke tertinggi
+    function loadLeaderboardFromLocalStorage() {
+        const leaderboardData = JSON.parse(localStorage.getItem('leaderboard'));
+        const leaderboardPlayers = document.getElementById('leaderboardPlayers'); // Ambil elemen pemain
+        leaderboardPlayers.innerHTML = ''; // Kosongkan pemain sebelum memuat data
+
+        if (leaderboardData) {
+            leaderboardData.forEach(player => {
+                const playerDiv = document.createElement('div');
+                playerDiv.classList.add('player');
+                playerDiv.innerHTML = `
+                    <span class="name">${player.name}</span>
+                    <br>
+                    <span class="score">Score: ${player.score}</span>
+                    <button class="detailButton">Detail</button>
+                `;
+                leaderboardPlayers.appendChild(playerDiv);
+            });
         }
-    });
+    }
 
 });
