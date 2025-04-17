@@ -87,8 +87,8 @@ document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('mousemove', (e) => {
         const customCursor = document.querySelector('.custom-cursor');
         if (customCursor) {
-            // Cek apakah mouse berada di dalam elemen .skor, .hand, atau .square
-            const isInsideExcludedElement = [skor, hand, square].some(element => element.contains(e.target));
+            // Cek apakah mouse berada di dalam elemen .skor, .hand, .square, atau tombol "Detail"
+            const isInsideExcludedElement = [skor, hand, square, ...document.querySelectorAll('.detailButton')].some(element => element.contains(e.target));
             if (isInsideExcludedElement) {
                 customCursor.style.display = 'none'; // Sembunyikan kursor kustom
                 document.body.style.cursor = 'auto'; // Kembalikan kursor default
@@ -188,13 +188,15 @@ document.addEventListener('DOMContentLoaded', () => {
         players.forEach(player => {
             const name = player.querySelector('.name').innerText;
             const score = parseInt(player.querySelector('.score').innerText.split(': ')[1]);
-            leaderboard.push({ name, score });
+            const time = player.dataset.time;
+            const level = player.dataset.level;
+            leaderboard.push({ name, score, time, level });
         });
         localStorage.setItem('leaderboard', JSON.stringify(leaderboard));
     }
 
     // Fungsi untuk memperbarui leaderboard
-    function updateLeaderboard(playerName, score) {
+    function updateLeaderboard(playerName, score, time, level) {
         const leaderboardPlayers = document.getElementById('leaderboardPlayers');
         const existingPlayer = Array.from(leaderboardPlayers.querySelectorAll('.player')).find(player => {
             const name = player.querySelector('.name').innerText;
@@ -205,14 +207,15 @@ document.addEventListener('DOMContentLoaded', () => {
             const currentScore = parseInt(existingPlayer.querySelector('.score').innerText.split(': ')[1]);
             if (score > currentScore) {
                 existingPlayer.querySelector('.score').innerText = `Score: ${score}`;
+                existingPlayer.dataset.time = time; // Perbarui waktu penyelesaian
+                existingPlayer.dataset.level = level; // Perbarui mode kesulitan
                 console.log(`Skor diperbarui untuk ${playerName} dengan skor baru: ${score}`);
-                saveLeaderboardToLocalStorage(); // Simpan ke localStorage
-            } else {
-                console.log(`Skor baru (${score}) lebih rendah atau sama. Tidak diperbarui.`);
             }
         } else {
             const playerDiv = document.createElement('div');
             playerDiv.classList.add('player');
+            playerDiv.dataset.time = time; // Tambahkan waktu penyelesaian
+            playerDiv.dataset.level = level; // Tambahkan mode kesulitan
             playerDiv.innerHTML = `
                 <span class="name">${playerName}</span>
                 <br>
@@ -220,30 +223,40 @@ document.addEventListener('DOMContentLoaded', () => {
                 <button class="detailButton">Detail</button>
             `;
             leaderboardPlayers.appendChild(playerDiv);
-            saveLeaderboardToLocalStorage(); // Simpan ke localStorage
             console.log(`Pemain baru ditambahkan: ${playerName} dengan skor: ${score}`);
         }
 
+        saveLeaderboardToLocalStorage(); // Simpan ke localStorage
         sortLeaderboard(); // Urutkan leaderboard setelah menambahkan atau memperbarui pemain
     }
 
     function sortLeaderboard(order = 'desc') {
         const leaderboardPlayers = document.getElementById('leaderboardPlayers');
+        if (!leaderboardPlayers) {
+            console.error('Elemen #leaderboardPlayers tidak ditemukan!');
+            return;
+        }
+    
         const players = Array.from(leaderboardPlayers.querySelectorAll('.player'));
-
+        if (players.length === 0) {
+            console.warn('Tidak ada pemain untuk diurutkan.');
+            return;
+        }
+    
         players.sort((a, b) => {
             const scoreA = parseInt(a.querySelector('.score').innerText.split(': ')[1]);
             const scoreB = parseInt(b.querySelector('.score').innerText.split(': ')[1]);
-
+    
             if (order === 'asc') {
                 return scoreA - scoreB; // Urutkan dari skor terendah ke tertinggi
             } else {
                 return scoreB - scoreA; // Urutkan dari skor tertinggi ke terendah
             }
         });
-
+    
         // Hapus semua elemen pemain dan tambahkan kembali dalam urutan yang benar
         players.forEach(player => leaderboardPlayers.appendChild(player));
+        console.log(`Leaderboard berhasil diurutkan: ${order}`);
     }
 
     function loadLeaderboardFromLocalStorage() {
@@ -265,5 +278,73 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
     }
+
+    document.querySelector('select').addEventListener('change', (event) => {
+        const sortOption = event.target.value;
+        if (sortOption === 'highest') {
+            sortLeaderboard('desc'); // Urutkan dari skor tertinggi ke terendah
+        } else if (sortOption === 'lowest') {
+            sortLeaderboard('asc'); // Urutkan dari skor terendah ke tertinggi
+        }
+    });
+
+    // Tambahkan event listener untuk dropdown sort
+    document.querySelector('#sortDropdown').addEventListener('change', (event) => {
+        const sortOption = event.target.value;
+        if (sortOption === 'highest') {
+            sortLeaderboard('desc'); // Urutkan dari skor tertinggi ke terendah
+        } else if (sortOption === 'lowest') {
+            sortLeaderboard('asc'); // Urutkan dari skor terendah ke tertinggi
+        }
+    });
+
+    document.addEventListener('click', (e) => {
+        if (e.target.classList.contains('detailButton')) {
+            console.log('Tombol Detail diklik'); // Debugging
+            const playerDiv = e.target.parentElement;
+            const playerName = playerDiv.querySelector('.name').innerText;
+            const playerScore = playerDiv.querySelector('.score').innerText.split(': ')[1];
+            const playerTime = playerDiv.dataset.time;
+            const playerLevel = playerDiv.dataset.level;
+
+            // Periksa apakah detail sudah ditampilkan
+            let detailDiv = playerDiv.querySelector('.player-detail');
+            if (detailDiv) {
+                // Jika detail sudah ada, hapus detail
+                detailDiv.remove();
+            } else {
+                // Jika detail belum ada, tambahkan detail
+                detailDiv = document.createElement('div');
+                detailDiv.classList.add('player-detail');
+                detailDiv.style.marginTop = '10px';
+                detailDiv.style.padding = '10px';
+                detailDiv.style.border = '1px solid #ccc';
+                detailDiv.style.borderRadius = '5px';
+                detailDiv.style.backgroundColor = '#f9f9f9';
+
+                detailDiv.innerHTML = `
+                    <p><strong>Nama:</strong> ${playerName}</p>
+                    <p><strong>Skor:</strong> ${playerScore}</p>
+                    <p><strong>Waktu Penyelesaian:</strong> ${playerTime}</p>
+                    <p><strong>Mode Kesulitan:</strong> ${playerLevel}</p>
+                `;
+                playerDiv.appendChild(detailDiv);
+            }
+        }
+    });
+
+    // Tutup modal saat tombol "close" diklik
+    document.getElementById('closeModal').addEventListener('click', () => {
+        const modal = document.getElementById('playerDetailModal');
+        modal.style.display = 'none';
+    });
+
+    // Tutup modal saat pengguna mengklik di luar modal
+    window.addEventListener('click', (e) => {
+        const modal = document.getElementById('playerDetailModal');
+        if (e.target === modal) {
+            modal.style.display = 'none';
+        }
+    });
 
 });

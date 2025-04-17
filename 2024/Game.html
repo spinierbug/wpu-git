@@ -40,10 +40,20 @@
             <center>
             <br>
             <h><b>LEADERBOARD</b></h>
-            <select>
+            <select id="sortDropdown">
                 <option value="highest">Sort By Highest Scores</option>
                 <option value="lowest">Sort By Lowest Scores</option>
             </select>
+            <div id="playerDetailModal" class="modal" style="display: none;">
+                <div class="modal-content">
+                    <span id="closeModal" class="close">&times;</span>
+                    <h2>Detail Pemain</h2>
+                    <p id="playerNameDetail"></p>
+                    <p id="playerScoreDetail"></p>
+                    <p id="playerTimeDetail"></p>
+                    <p id="playerLevelDetail"></p>
+                </div>
+            </div>            
             <br>
             </center>
             <div id="leaderboardPlayers"></div> <!-- Tambahkan div untuk pemain -->
