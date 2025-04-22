@@ -13,8 +13,8 @@
                 <div class="board">
                 </div>
                 <div id="gameOverMenu" style="display: none;">
-                    <h1>Game Over</h1>
-                    <p>Skor Akhir: <span id="finalScore"></span></p>
+                    <h2>Permainan Selesai</h2>
+                    <p id="finalScore">Skor Akhir: 0</p>
                     <button id="retryButton">Coba Lagi</button>
                     <button id="backToMenuButton">Kembali ke Menu</button>
                 </div>
@@ -31,7 +31,7 @@
         </div>
         <div class="skor">
             <p1 id="playerName">Player Name</p1>
-            <p2>Score: <span id="score" >0</span></p2>
+            <p2><span id="score" >Skor: 0</span></p2>
             <p3>Time: <span id="timer">0 Detik</span></p3>
         </div>
         <div class="hand">
@@ -44,6 +44,7 @@
                 <option value="highest">Sort By Highest Scores</option>
                 <option value="lowest">Sort By Lowest Scores</option>
             </select>
+            <div id="leaderboardPlayers"></div>
             <div id="playerDetailModal" class="modal" style="display: none;">
                 <div class="modal-content">
                     <span id="closeModal" class="close">&times;</span>
@@ -56,7 +57,6 @@
             </div>            
             <br>
             </center>
-            <div id="leaderboardPlayers"></div> <!-- Tambahkan div untuk pemain -->
         </div>
         <script src ="Game.js"></script>
         </div>

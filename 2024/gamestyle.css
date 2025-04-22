@@ -126,7 +126,7 @@ p3 {
     background: url('pointer.png') no-repeat center center; /* Gambar kursor */
     background-size: contain;
     z-index: 9999; /* Pastikan elemen ini berada di atas */
-    pointer-events: none; /* Jangan menghalangi klik */
+    pointer-events: none; /* Jangan menghalangi klik atau scroll */
 }
 
 .target1 {
@@ -245,6 +245,17 @@ p3 {
         color: black;
         text-decoration: none;
         cursor: pointer;
+    }
+
+    #leaderboardPlayers {
+        max-height: 300px; /* Atur tinggi maksimum leaderboard */
+        overflow-y: auto; /* Tambahkan scroll vertikal jika konten melebihi tinggi maksimum */
+        border: 1px solid #000000; /* Tambahkan border untuk memperjelas area leaderboard */
+        padding: 10px; /* Tambahkan padding untuk estetika */
+        background-color: #000000; /* Warna latar belakang */
+        border-radius: 5px; /* Tambahkan border radius untuk sudut melengkung */
+        z-index: 4; /* Pastikan elemen berada di atas elemen lain */
+        box-sizing: border-box; /* Pastikan padding dan border tidak mempengaruhi tinggi total */
     }
 
 @media (max-width: 768px) {
